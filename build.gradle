@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.tomgregory'
-version '0.0.1-SNAPSHOT'
+version '0.2.0'
 
 repositories {
     mavenCentral()
@@ -16,9 +16,24 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "gpr"
+            url = uri("https://maven.pkg.github.com/kazurayam/gradle-java-library-plugin-library")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GPR_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GPR_TOKEN")
+            }
+        }
+    }
     publications {
-        maven(MavenPublication) {
+        mylib(MavenPublication) {
             from components.java
         }
     }
 }
+
+/*
+println "gpr.user=" + project.findProperty('gpr.user')
+println "gpr.key =" + project.findProperty('gpr.key')
+ */
